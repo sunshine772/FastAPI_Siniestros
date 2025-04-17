@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Siniestros</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/web/favicon.ico">
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+    <div id="app" class="container mx-auto p-6 max-w-4xl">
+        <header class="mb-8">
+            <h1 class="text-4xl font-extrabold text-center text-blue-400">FastAPI Siniestros</h1>
+            <p class="text-center text-gray-400 mt-2">Monitor de datos en tiempo real</p>
+        </header>
+        <div class="bg-gray-800 rounded-xl shadow-2xl p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-gray-100">Estado del Listener</h2>
+                <div class="flex space-x-2">
+                    <span v-for="(stage, index) in stages" :key="index" 
+                          :class="{'bg-blue-500': stage === phase, 'bg-gray-600': stage !== phase}" 
+                          class="h-2 w-2 rounded-full transition-all duration-300"></span>
+                </div>
+            </div>
+            <waiting-phase v-if="phase === 'waiting'" 
+                           @send-data="sendData" 
+                           :is-valid="isValidInput" 
+                           :input-mode="inputMode" 
+                           @update:input-mode="inputMode = $event"></waiting-phase>
+            <received-phase v-else-if="phase === 'received'" :data="receivedData"></received-phase>
+            <processing-phase v-else-if="phase === 'processing'"></processing-phase>
+            <result-phase v-else-if="phase === 'result'" :result="result"></result-phase>
+            <finished-phase v-else-if="phase === 'finished'" @reset="reset"></finished-phase>
+            <p v-if="error" class="text-red-400 mt-4 text-center flex items-center justify-center">
+                <i class="fas fa-exclamation-circle mr-2"></i>{{ error }}
+            </p>
+        </div>
+    </div>
+    <script src="/web/js/app.js"></script>
+</body>
+</html>

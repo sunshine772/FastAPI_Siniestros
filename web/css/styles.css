@@ -1,0 +1,9 @@
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background: #1f2937;
+    color: #e5e7eb;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-family: 'Courier New', Courier, monospace;
+}
